@@ -23,21 +23,19 @@ body{
 
 .fresarte-header{
     background:#fff;
-    padding:12px 0;
+    padding:12px 20px;
     position:sticky;
     top:0;
     z-index:999;
     box-shadow:0 0 18px rgba(0,0,0,.2);
 }
 .fresarte-container{
-    width:90%;
+    width:100%;
     max-width:1200px;
     margin:auto;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    flex-wrap:wrap;
-    gap:10px;
 }
 .logo-redondo{
     width:55px;
@@ -46,7 +44,25 @@ body{
     border:3px solid #e63946;
 }
 
-.fresarte-nav ul{list-style:none;display:flex;gap:20px;flex-wrap:wrap;}
+.menu-toggle{
+    display:none;
+    background:none;
+    border:none;
+    font-size:1.5rem;
+    cursor:pointer;
+    color:#e63946;
+}
+
+.fresarte-nav{
+    display:flex;
+}
+
+.fresarte-nav ul{
+    list-style:none;
+    display:flex;
+    gap:20px;
+}
+
 .fresarte-nav a{
     text-decoration:none;
     color:#000;
@@ -144,22 +160,47 @@ footer{
 
 /* MEDIA QUERIES MÓVIL */
 @media (max-width:768px){
-    .fresarte-container{
-        flex-direction:column;
-        gap:15px;
+    .menu-toggle{
+        display:block;
     }
-    
+
+    .fresarte-nav{
+        position:absolute;
+        top:100%;
+        left:0;
+        right:0;
+        background:#fff;
+        max-height:0;
+        overflow:hidden;
+        transition:max-height .3s ease;
+        box-shadow:0 4px 6px rgba(0,0,0,.1);
+    }
+
+    .fresarte-nav.active{
+        max-height:500px;
+    }
+
     .fresarte-nav ul{
-        justify-content:center;
-        gap:10px;
-        font-size:0.85rem;
+        flex-direction:column;
+        gap:0;
+        padding:15px 20px;
     }
-    
+
     .fresarte-nav a{
-        padding:6px 8px;
-        font-size:0.85rem;
+        display:block;
+        padding:12px 0;
+        border-bottom:1px solid #f0f0f0;
+        font-size:0.9rem;
     }
-    
+
+    .fresarte-nav a::after{
+        display:none;
+    }
+
+    .fresarte-nav a:hover{
+        color:#e63946;
+    }
+
     .map-section{
         padding:30px 15px;
     }
@@ -175,14 +216,9 @@ footer{
         height:45px;
     }
     
-    .fresarte-nav ul{
-        gap:5px;
-        font-size:0.75rem;
-    }
-    
     .fresarte-nav a{
-        padding:4px 6px;
-        font-size:0.75rem;
+        font-size:0.85rem;
+        padding:10px 0;
     }
     
     .strawberry-rain span{
@@ -210,7 +246,10 @@ footer{
 <header class="fresarte-header">
     <div class="fresarte-container">
         <img src="logo.jpg" class="logo-redondo">
-        <nav class="fresarte-nav">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="fresarte-nav" id="navMenu">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="quienes-somos.html">Quiénes somos</a></li>
@@ -228,7 +267,6 @@ footer{
     <p>Haz clic en un marcador para abrir Google Maps</p>
 
     <div class="dr-map-container">
-
         <!-- ESTE -->
         <div class="map-marker" style="top:55%;left:80%" onclick="openMaps('https://maps.google.com/?q=Higüey')"><i class="fas fa-map-marker-alt" title="Higüey"></i></div>
         <div class="map-marker" style="top:60%;left:90%" onclick="openMaps('https://maps.google.com/?q=Punta+Cana')"><i class="fas fa-map-marker-alt" title="Punta Cana" ></i></div>
@@ -242,7 +280,6 @@ footer{
         <div class="map-marker" style="top:56%;left:52%" onclick="openMaps('https://maps.google.com/?q=Santo+Domingo+Norte')"><i class="fas fa-map-marker-alt" title="Santo Domingo Norte"></i></div>
         <div class="map-marker" style="top:59%;left:59%" onclick="openMaps('https://maps.google.com/?q=Santo+Domingo+Este')"><i class="fas fa-map-marker-alt" title="Santo Domingo Este"></i></div>
         <div class="map-marker" style="top:62%;left:54%" onclick="openMaps('https://maps.google.com/?q=Distrito+Nacional')"><i class="fas fa-map-marker-alt" title="Distrito Nacional"></i></div>
-
     </div>
 </section>
 
@@ -254,6 +291,21 @@ footer{
 function openMaps(url){
     window.open(url,'_blank');
 }
+
+// Menú desplegable
+const menuToggle = document.getElementById('menuToggle');
+const navMenu = document.getElementById('navMenu');
+
+menuToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+});
+
+// Cerrar menú al hacer clic en un enlace
+navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+    });
+});
 </script>
 
 </body>
