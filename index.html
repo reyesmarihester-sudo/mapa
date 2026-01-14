@@ -12,6 +12,7 @@
     --fresa:#f06a9b;
     --rosita-clara:#fff6fa;
     --texto:#573542;
+    --radius:10px;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:"Nunito",sans-serif;}
@@ -29,6 +30,7 @@ body{
     z-index:999;
     box-shadow:0 0 18px rgba(0,0,0,.2);
 }
+
 .fresarte-container{
     width:100%;
     max-width:1200px;
@@ -37,22 +39,36 @@ body{
     justify-content:space-between;
     align-items:center;
 }
+
+/* LOGO */
+.fresarte-logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--texto);
+    cursor:pointer;
+}
+
 .logo-redondo{
     width:55px;
     height:55px;
     border-radius:50%;
     border:3px solid #e63946;
+    object-fit:cover;
 }
 
-.menu-toggle{
+/* MENÚ BURGER BOTÓN */
+.fresarte-burger{
     display:none;
     background:none;
-    border:none;
-    font-size:1.5rem;
-    cursor:pointer;
+    border:0;
+    font-size:28px;
     color:#e63946;
+    cursor:pointer;
 }
 
+/* NAV DESKTOP */
 .fresarte-nav{
     display:flex;
 }
@@ -65,43 +81,56 @@ body{
 
 .fresarte-nav a{
     text-decoration:none;
-    color:#000;
+    color:var(--texto);
     font-weight:600;
     padding:8px 12px;
+    border-radius:var(--radius);
     position:relative;
-    font-size:0.95rem;
+    transition:.25s;
 }
+
+/* Subrayado dinámico */
 .fresarte-nav a::after{
     content:"";
     position:absolute;
     left:50%;
     bottom:0;
-    width:0;
+    width:0%;
     height:3px;
     background:#e63946;
-    transition:.3s;
-}
-.fresarte-nav a:hover::after{width:100%;left:0;}
-.fresarte-nav a.active{
-    background:#f5d5e0;
-    color:#e63946;
-    font-weight:bold;
+    border-radius:10px;
+    transition:all .3s ease;
 }
 
-/*lluvia de fresas*/
+.fresarte-nav a:hover::after{
+    width:100%;
+    left:0;
+}
+
+/* Activo */
+.fresarte-nav a.active{
+    color:#fff;
+    background:#e63946;
+}
+
+/* lluvia de fresas */
 .strawberry-rain{
     position:fixed;
     inset:0;
     pointer-events:none;
     z-index:0;
 }
+
 .strawberry-rain span{
     position:absolute;
     top:-10%;
     font-size:24px;
     animation:fall linear infinite;
 }
-@keyframes fall{to{transform:translateY(120vh) rotate(360deg);}}
+
+@keyframes fall{
+    to{transform:translateY(120vh) rotate(360deg);}
+}
 
 .map-section{
     position:relative;
@@ -109,10 +138,12 @@ body{
     padding:40px 20px;
     text-align:center;
 }
+
 .map-section h2{
     color:var(--fresa);
     font-size:clamp(1.8rem,5vw,2.4rem);
 }
+
 .map-section p{
     color:#6d4b57;
     margin-bottom:25px;
@@ -139,11 +170,13 @@ body{
     transform:translate(-50%,-100%);
     cursor:pointer;
 }
+
 .map-marker i{
     font-size:clamp(1.2em,4vw,2em);
     color:#c0392b;
     transition:.2s;
 }
+
 .map-marker i:hover{
     color:#e74c3c;
     transform:scale(1.2);
@@ -159,38 +192,43 @@ footer{
 }
 
 /* MEDIA QUERIES MÓVIL */
-@media (max-width:768px){
-    .menu-toggle{
+@media(max-width:900px){
+    .fresarte-burger{
         display:block;
     }
 
     .fresarte-nav{
         position:absolute;
-        top:100%;
-        left:0;
         right:0;
+        top:70px;
+        width:75%;
         background:#fff;
-        max-height:0;
-        overflow:hidden;
-        transition:max-height .3s ease;
-        box-shadow:0 4px 6px rgba(0,0,0,.1);
+        padding:20px;
+        border-radius:0 0 0 18px;
+        display:none;
+        flex-direction:column;
+        box-shadow:0 0 18px rgba(0,0,0,.2);
+        animation:menuSlide .35s ease-out;
     }
 
-    .fresarte-nav.active{
-        max-height:500px;
+    @keyframes menuSlide{
+        from{opacity:0;transform:translateY(-10px);}
+        to{opacity:1;transform:translateY(0);}
+    }
+
+    .fresarte-nav.open{
+        display:flex;
     }
 
     .fresarte-nav ul{
         flex-direction:column;
         gap:0;
-        padding:15px 20px;
     }
 
     .fresarte-nav a{
         display:block;
         padding:12px 0;
         border-bottom:1px solid #f0f0f0;
-        font-size:0.9rem;
     }
 
     .fresarte-nav a::after{
@@ -199,28 +237,29 @@ footer{
 
     .fresarte-nav a:hover{
         color:#e63946;
+        background:transparent;
     }
 
     .map-section{
         padding:30px 15px;
     }
-    
+
     .map-section h2{
         font-size:1.6rem;
     }
 }
 
-@media (max-width:480px){
+@media(max-width:480px){
     .logo-redondo{
         width:45px;
         height:45px;
     }
-    
+
     .fresarte-nav a{
         font-size:0.85rem;
         padding:10px 0;
     }
-    
+
     .strawberry-rain span{
         font-size:16px;
     }
@@ -245,11 +284,13 @@ footer{
 
 <header class="fresarte-header">
     <div class="fresarte-container">
-        <img src="logo.jpg" class="logo-redondo">
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <nav class="fresarte-nav" id="navMenu">
+        <a class="fresarte-logo">
+            <img src="logo.jpg" alt="Logo Fresarte" class="logo-redondo">
+        </a>
+
+        <button class="fresarte-burger" id="fresaBurger">☰</button>
+
+        <nav class="fresarte-nav" id="fresaNav">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="quienes-somos.html">Quiénes somos</a></li>
@@ -293,17 +334,14 @@ function openMaps(url){
 }
 
 // Menú desplegable
-const menuToggle = document.getElementById('menuToggle');
-const navMenu = document.getElementById('navMenu');
-
-menuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+document.getElementById("fresaBurger").addEventListener("click", ()=>{
+    document.getElementById("fresaNav").classList.toggle("open");
 });
 
 // Cerrar menú al hacer clic en un enlace
-navMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+document.querySelectorAll(".fresarte-nav a").forEach(link => {
+    link.addEventListener("click", () => {
+        document.getElementById("fresaNav").classList.remove("open");
     });
 });
 </script>
